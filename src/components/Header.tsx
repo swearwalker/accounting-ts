@@ -4,31 +4,39 @@ import TypeModal from './modals/TypeModal'
 import CategoryModal from './modals/CategoryModal'
 import OperationModal from './modals/OperationModal'
 import { Dialog } from 'primereact/dialog'
+import { Button } from 'primereact/button'
 import { SplitButton } from 'primereact/splitbutton'
 
 import { TypeDTO, CategoryDTO, OperationDTO } from '../types'
 import { getGeneratedIntUniqueId } from '../helpers/common'
+import { getDataByName, setDataByName } from '../helpers/localStorage'
+
+const emptyType: TypeDTO = {
+  name: '',
+  id: 0,
+}
+
+const emptyCategory: CategoryDTO = {
+  name: '',
+  id: 0,
+  variationId: null,
+}
+
+const emptyOperation: OperationDTO = {
+  sum: null,
+  id: 0,
+  categoryId: null,
+  typeId: null,
+  date: new Date(),
+}
 
 function Header() {
   const [typeModal, setTypeModal] = useState(false)
   const [categoryModal, setCategoryModal] = useState(false)
   const [operationModal, setOperationModal] = useState(false)
-  const [type, setType] = useState<TypeDTO>({
-    name: '',
-    id: '',
-  })
-  const [category, setCategory] = useState<CategoryDTO>({
-    name: '',
-    id: '',
-    variationId: '',
-  })
-  const [operation, setOperation] = useState<OperationDTO>({
-    sum: null,
-    id: '',
-    categoryId: '',
-    typeId: '',
-    date: new Date(),
-  })
+  const [type, setType] = useState<TypeDTO>(emptyType)
+  const [category, setCategory] = useState<CategoryDTO>(emptyCategory)
+  const [operation, setOperation] = useState<OperationDTO>(emptyOperation)
 
   const actions = [
     {
@@ -60,39 +68,51 @@ function Header() {
     setOperation(value)
   }
 
-  const closeTypeModal = () => {
+  const cleanModals = () => {
+    setType(emptyType)
+    setCategory(emptyCategory)
+    setOperation(emptyOperation)
+  }
+
+  const closeModals = () => {
     setTypeModal(false)
-    setType({
-      name: '',
-      id: '',
-    })
-  }
-
-  const closeCategoryModal = () => {
     setCategoryModal(false)
-    setCategory({
-      name: '',
-      id: '',
-      variationId: '',
-    })
-  }
-
-  const closeOperationModal = () => {
     setOperationModal(false)
-    setOperation({
-      sum: null,
-      id: '',
-      categoryId: '',
-      typeId: '',
-      date: new Date(),
-    })
+    cleanModals()
   }
 
-  const addNewType = () => {
-    const newType = {
-      ...type,
-      id: getGeneratedIntUniqueId,
+  const addNewItem = (name: string, state: TypeDTO | CategoryDTO | OperationDTO) => {
+    const newItem = {
+      ...state,
+      id: getGeneratedIntUniqueId(),
     }
+
+    const lsData = getDataByName(name)
+
+    // @ts-ignore
+    lsData.push(newItem)
+
+    setDataByName(name, lsData)
+    closeModals()
+  }
+
+  const renderFooter = (name: string, state: TypeDTO | CategoryDTO | OperationDTO) => {
+    return (
+      <div>
+        <Button
+          label="Відміна"
+          icon="pi pi-times"
+          onClick={closeModals}
+          className="p-button-text"
+        />
+        <Button
+          label="Зберегти"
+          icon="pi pi-check"
+          onClick={() => addNewItem(name, state)}
+          autoFocus={true}
+        />
+      </div>
+    )
   }
 
   return (
@@ -105,7 +125,8 @@ function Header() {
         visible={typeModal}
         modal={false}
         draggable={false}
-        onHide={closeTypeModal}
+        onHide={closeModals}
+        footer={renderFooter('types', type)}
       >
         <TypeModal type={type} onChange={changeType} />
       </Dialog>
@@ -114,7 +135,8 @@ function Header() {
         visible={categoryModal}
         modal={false}
         draggable={false}
-        onHide={closeCategoryModal}
+        onHide={closeModals}
+        footer={renderFooter('categories', category)}
       >
         <CategoryModal category={category} onChange={changeCategory} />
       </Dialog>
@@ -123,7 +145,8 @@ function Header() {
         visible={operationModal}
         modal={false}
         draggable={false}
-        onHide={closeOperationModal}
+        onHide={closeModals}
+        footer={renderFooter('operations', operation)}
       >
         <OperationModal operation={operation} onChange={changeOperation} />
       </Dialog>

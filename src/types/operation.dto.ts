@@ -1,7 +1,7 @@
 export type OperationDTO = {
   sum: number | null
-  id: string
+  id: number
   date: Date | Date[] | undefined
-  categoryId: string
-  typeId: string
+  categoryId: number | null
+  typeId: number | null
 }

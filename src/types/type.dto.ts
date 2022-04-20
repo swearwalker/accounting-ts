@@ -1,4 +1,4 @@
 export type TypeDTO = {
   name: string
-  id: string
+  id: number
 }
