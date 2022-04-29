@@ -1,8 +1,8 @@
 import { SyntheticEvent, useState } from 'react'
 import { InputText } from 'primereact/inputtext'
-import { TypeDTO } from '../../types'
+import { IType } from '../../types'
 
-function TypeModal(props: { onChange: any; type: TypeDTO; editMode?: boolean }) {
+function TypeModal(props: { onChange: any; type: IType; editMode?: boolean }) {
   const [type, setValue] = useState(props.type)
 
   const changeValue = (event: SyntheticEvent<HTMLInputElement>) => {
