@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { InputNumber } from 'primereact/inputnumber'
 import { Dropdown } from 'primereact/dropdown'
 import { Calendar } from 'primereact/calendar'
-import { CategoryDTO, OperationDTO, TypeDTO } from '../../types'
+import { ICategory, IOperation, IMoney } from '../../types'
 
-function OperationModal(props: { onChange: any; operation: OperationDTO; editMode?: boolean }) {
+function OperationModal(props: { onChange: any; operation: IOperation; editMode?: boolean }) {
   const [operation, setOperation] = useState(props.operation)
 
   const changeDate = (e: { value: Date | Date[] | undefined }) => {
@@ -31,7 +31,7 @@ function OperationModal(props: { onChange: any; operation: OperationDTO; editMod
     })
   }
 
-  const changeTypeId = (e: { value: TypeDTO }) => {
+  const changeTypeId = (e: { value: IMoney }) => {
     setOperation({
       ...operation,
       typeId: e.value.id,
@@ -43,7 +43,7 @@ function OperationModal(props: { onChange: any; operation: OperationDTO; editMod
     })
   }
 
-  const changeCategoryId = (e: { value: CategoryDTO }) => {
+  const changeCategoryId = (e: { value: ICategory }) => {
     setOperation({
       ...operation,
       categoryId: e.value.id,

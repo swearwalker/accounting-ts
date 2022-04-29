@@ -1,6 +1,6 @@
-import { VariationDto } from '../types'
+import { IVariation } from '../types'
 
-export const variations: VariationDto[] = [
+export const variations: IVariation[] = [
   {
     id: 1,
     name: 'Витрата',

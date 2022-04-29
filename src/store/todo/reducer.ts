@@ -1,26 +1,19 @@
 import { ActionTypes } from './actionTypes'
-import { MoneyState, MoneyAction, IMoney } from '../../types/money'
+import { TodoState, TodoAction, ITodoItem } from '../../types/todo'
 import { getGeneratedIntUniqueId } from '../../helpers/common'
 import { getDataByName } from '../../helpers/localStorage'
 
-const initState: MoneyState = {
+const initState: TodoState = {
   list: [],
   item: {},
 }
 
-let updatedList: IMoney[] | [] = []
+let updatedList: ITodoItem[] | [] = []
 
-export const moneyReducer = (state = initState, action: MoneyAction) => {
+export const todoReducer = (state = initState, action: TodoAction) => {
   switch (action.type) {
-    case ActionTypes.GET_MONEY:
-      const list: IMoney[] | [] = getDataByName('types')
-
-      return {
-        ...state,
-        list,
-      }
-    case ActionTypes.ADD_MONEY:
-      const newItem: IMoney = {
+    case ActionTypes.ADD_TODO:
+      const newItem: ITodoItem = {
         ...action.payload,
         id: getGeneratedIntUniqueId(),
       }
@@ -29,7 +22,7 @@ export const moneyReducer = (state = initState, action: MoneyAction) => {
         ...state,
         list: [...state.list, newItem],
       }
-    case ActionTypes.EDIT_MONEY:
+    case ActionTypes.EDIT_TODO:
       updatedList = state.list.map((item) => {
         if (item.id === action.payload.id) {
           return {
@@ -45,7 +38,7 @@ export const moneyReducer = (state = initState, action: MoneyAction) => {
         ...state,
         list: updatedList,
       }
-    case ActionTypes.DELETE_MONEY:
+    case ActionTypes.DELETE_TODO:
       updatedList = state.list.filter((item) => item.id !== action.payload.id)
 
       return {

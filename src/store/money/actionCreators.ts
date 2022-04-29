@@ -1,51 +1,38 @@
-import { IType, ICategory, IOperation } from '../../types'
-import { getDataByName } from '../../helpers/localStorage'
-import { TypesState } from '../../types/money'
+import { IMoney, MoneyAction } from '../../types/money'
+import { ActionTypes } from './actionTypes'
 
-export const getTypes = (state = ): TypesState => {
-  return {
-    types: getDataByName('types'),
+export function getMoney(payload: IMoney) {
+  const action: MoneyAction = {
+    type: ActionTypes.GET_MONEY,
+    payload,
   }
+
+  return action
 }
 
-export const getTypeById = (): TypesState => {
-  return {
-    types: getDataByName('types'),
+export function editMoney(payload: IMoney) {
+  const action: MoneyAction = {
+    type: ActionTypes.EDIT_MONEY,
+    payload,
   }
+
+  return action
 }
 
-export const addType = (newItem: IType[]): TypesState => {
-  const types: IType[] | [] = getDataByName('types')
-
-  // @ts-ignore
-  types.push(newItem)
-  return {
-    types,
+export function addMoney(payload: IMoney) {
+  const action: MoneyAction = {
+    type: ActionTypes.ADD_MONEY,
+    payload,
   }
+
+  return action
 }
 
-export const removeType
-
-export const getComments = (postId: string) => {
-  return async (dispatch: Dispatch<Action>) => {
-    dispatch({
-      type: ActionType.GET_POST_COMMENTS_PENDING,
-    })
-
-    try {
-      const { data } = await axios.get(
-        `https://jsonplaceholder.typicode.com/comments?postId=${postId}`
-      )
-
-      dispatch({
-        type: ActionType.GET_POST_COMMENTS_SUCCESS,
-        payload: data,
-      })
-    } catch (err) {
-      dispatch({
-        type: ActionType.GET_POST_COMMENTS_FAIL,
-        payload: err.message,
-      })
-    }
+export function deleteMoney(payload: IMoney) {
+  const action: MoneyAction = {
+    type: ActionTypes.DELETE_MONEY,
+    payload,
   }
+
+  return action
 }

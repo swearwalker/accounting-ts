@@ -4,7 +4,7 @@ export interface ICategory {
   variationId: number | null
 }
 
-export type CategoriesState = {
+export type CategoryState = {
   categories: ICategory[]
 }
 
@@ -13,4 +13,4 @@ type CategoryAction = {
   data: ICategory
 }
 
-type DispatchType = (args: CategoryAction) => CategoryAction
+type DispatchCategoryType = (args: CategoryAction) => CategoryAction

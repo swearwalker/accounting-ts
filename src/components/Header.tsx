@@ -1,28 +1,32 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+// import { useSelector } from 'react-redux'
 
-import TypeModal from './modals/TypeModal'
+import MoneyModal from './modals/MoneyModal'
 import CategoryModal from './modals/CategoryModal'
 import OperationModal from './modals/OperationModal'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
 import { SplitButton } from 'primereact/splitbutton'
 
-import { TypeDTO, CategoryDTO, OperationDTO } from '../types'
-import { getGeneratedIntUniqueId } from '../helpers/common'
-import { getDataByName, setDataByName } from '../helpers/localStorage'
+import { IMoney, ICategory, IOperation } from '../types'
+import { useDispatch } from 'react-redux'
+import { addMoney } from '../store/money/actionCreators'
+// import { MoneyState } from '../types/money'
+// import { IStore } from '../types/store'
+import { Link } from 'react-router-dom'
 
-const emptyType: TypeDTO = {
+const emptyType: IMoney = {
   name: '',
   id: 0,
 }
 
-const emptyCategory: CategoryDTO = {
+const emptyCategory: ICategory = {
   name: '',
   id: 0,
   variationId: null,
 }
 
-const emptyOperation: OperationDTO = {
+const emptyOperation: IOperation = {
   sum: null,
   id: 0,
   categoryId: null,
@@ -30,13 +34,17 @@ const emptyOperation: OperationDTO = {
   date: new Date(),
 }
 
-function Header() {
+function Header(props: any) {
   const [typeModal, setTypeModal] = useState(false)
   const [categoryModal, setCategoryModal] = useState(false)
   const [operationModal, setOperationModal] = useState(false)
-  const [type, setType] = useState<TypeDTO>(emptyType)
-  const [category, setCategory] = useState<CategoryDTO>(emptyCategory)
-  const [operation, setOperation] = useState<OperationDTO>(emptyOperation)
+  const [type, setType] = useState<IMoney>(emptyType)
+  const [category, setCategory] = useState<ICategory>(emptyCategory)
+  const [operation, setOperation] = useState<IOperation>(emptyOperation)
+
+  const dispatch = useDispatch()
+
+  // const money: MoneyState = useSelector((state: IStore) => state.money)
 
   const actions = [
     {
@@ -56,15 +64,15 @@ function Header() {
     },
   ]
 
-  const changeType = (value: TypeDTO) => {
+  const changeType = (value: IMoney) => {
     setType(value)
   }
 
-  const changeCategory = (value: CategoryDTO) => {
+  const changeCategory = (value: ICategory) => {
     setCategory(value)
   }
 
-  const changeOperation = (value: OperationDTO) => {
+  const changeOperation = (value: IOperation) => {
     setOperation(value)
   }
 
@@ -81,34 +89,34 @@ function Header() {
     cleanModals()
   }
 
-  const addNewItem = (name: string, state: TypeDTO | CategoryDTO | OperationDTO) => {
-    const newItem = {
-      ...state,
-      id: getGeneratedIntUniqueId(),
-    }
-
-    const lsData = getDataByName(name)
-
-    // @ts-ignore
-    lsData.push(newItem)
-
-    setDataByName(name, lsData)
+  const addNewMoney = () => {
+    dispatch(addMoney(type))
     closeModals()
   }
 
-  const renderFooter = (name: string, state: TypeDTO | CategoryDTO | OperationDTO) => {
+  const addNewCategory = () => {
+    // dispatch(createCategory(category))
+    closeModals()
+  }
+
+  const addNewOperation = () => {
+    // dispatch(createOperation(operation))
+    closeModals()
+  }
+
+  const renderFooter = (add: any) => {
     return (
       <div>
         <Button
           label="Відміна"
           icon="pi pi-times"
           onClick={closeModals}
-          className="p-button-text"
+          className="p-button-danger"
         />
         <Button
           label="Зберегти"
           icon="pi pi-check"
-          onClick={() => addNewItem(name, state)}
+          onClick={add}
           autoFocus={true}
         />
       </div>
@@ -116,27 +124,33 @@ function Header() {
   }
 
   return (
-    <header className="header">
-      <div className="container">
-        <SplitButton label="Оберіть дію" icon="pi pi-plus" model={actions} />
+    <header className="header fixed top-0 left-0 z-40 shadow w-full py-2">
+      <div className="container flex justify-between items-center">
+        <nav className="header__nav nav">
+            <Link className="nav__link mr-8" to="/">Головна</Link>
+            <Link className="nav__link" to="/todo">Todo</Link>
+        </nav>
+        <SplitButton label="Оберіть дію" icon="pi pi-plus" className='p-button-sm' model={actions} />
       </div>
       <Dialog
         header="Додати тип"
         visible={typeModal}
         modal={false}
         draggable={false}
+        style={{ width: '25vw' }}
         onHide={closeModals}
-        footer={renderFooter('types', type)}
+        footer={renderFooter(() => addNewMoney())}
       >
-        <TypeModal type={type} onChange={changeType} />
+        <MoneyModal type={type} onChange={changeType} />
       </Dialog>
       <Dialog
         header="Додати категорію"
         visible={categoryModal}
         modal={false}
         draggable={false}
+        style={{ width: '25vw' }}
         onHide={closeModals}
-        footer={renderFooter('categories', category)}
+        footer={renderFooter(() => addNewCategory())}
       >
         <CategoryModal category={category} onChange={changeCategory} />
       </Dialog>
@@ -145,8 +159,9 @@ function Header() {
         visible={operationModal}
         modal={false}
         draggable={false}
+        style={{ width: '25vw' }}
         onHide={closeModals}
-        footer={renderFooter('operations', operation)}
+        footer={renderFooter(() => addNewOperation())}
       >
         <OperationModal operation={operation} onChange={changeOperation} />
       </Dialog>

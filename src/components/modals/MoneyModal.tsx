@@ -1,8 +1,8 @@
 import { SyntheticEvent, useState } from 'react'
 import { InputText } from 'primereact/inputtext'
-import { IType } from '../../types'
+import { IMoney } from '../../types'
 
-function TypeModal(props: { onChange: any; type: IType; editMode?: boolean }) {
+function MoneyModal(props: { onChange: any; type: IMoney; editMode?: boolean }) {
   const [type, setValue] = useState(props.type)
 
   const changeValue = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -28,4 +28,4 @@ function TypeModal(props: { onChange: any; type: IType; editMode?: boolean }) {
   )
 }
 
-export default TypeModal
+export default MoneyModal

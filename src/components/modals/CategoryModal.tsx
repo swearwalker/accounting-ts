@@ -1,11 +1,11 @@
 import { SyntheticEvent, useState } from 'react'
 import { InputText } from 'primereact/inputtext'
 import { Dropdown } from 'primereact/dropdown'
-import { CategoryDTO, VariationDto } from '../../types'
+import { ICategory, IVariation } from '../../types'
 
 import { variations } from '../../mocks/variations'
 
-function CategoryModal(props: { onChange: any; category: CategoryDTO; editMode?: boolean }) {
+function CategoryModal(props: { onChange: any; category: ICategory; editMode?: boolean }) {
   const [category, setCategory] = useState(props.category)
 
   const changeValue = (event: SyntheticEvent<HTMLInputElement>) => {
@@ -21,7 +21,7 @@ function CategoryModal(props: { onChange: any; category: CategoryDTO; editMode?:
     })
   }
 
-  const changeVariation = (e: { value: VariationDto }) => {
+  const changeVariation = (e: { value: IVariation }) => {
     setCategory({
       ...category,
       variationId: e.value.id,

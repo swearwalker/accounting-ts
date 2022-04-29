@@ -1,0 +1,7 @@
+.p-tabview {
+  &.no-header {
+    &>.p-tabview-nav-container {
+      @apply hidden;
+    }
+  }
+}

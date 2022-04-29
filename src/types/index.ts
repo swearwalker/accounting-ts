@@ -1,6 +1,14 @@
-import { TypeDTO } from './type.dto'
-import { CategoryDTO } from './category.dto'
-import { OperationDTO } from './operation.dto'
-import { VariationDto } from './variation.dto'
+import { IMoney } from './money'
+import { ICategory, CategoryState, CategoryAction, DispatchCategoryType } from './category'
+import { IOperation } from './operation'
+import { IVariation } from './variation'
 
-export type { TypeDTO, CategoryDTO, OperationDTO, VariationDto }
+export type {
+  IMoney,
+  ICategory,
+  CategoryState,
+  CategoryAction,
+  DispatchCategoryType,
+  IOperation,
+  IVariation,
+}

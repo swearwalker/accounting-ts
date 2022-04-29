@@ -1,16 +1,16 @@
-export interface IType {
+export interface IMoney {
   name: string
   id: number
 }
 
-export type TypesState = {
-  types: IType[]
-  type: {}
+export type MoneyState = {
+  list: IMoney[]
+  item: {}
 }
 
-type TypeAction = {
+type MoneyAction = {
   type: string
-  data: IType
+  payload: IMoney
 }
 
-type DispatchType = (args: TypeAction) => TypeAction
+type DispatchType = (args: MoneyAction) => MoneyAction
