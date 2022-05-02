@@ -5,8 +5,8 @@ import { Dialog } from 'primereact/dialog'
 import TodoModal from '../modals/TodoModal'
 
 import { ITodoItem } from '../../types/todo'
-import { useDispatch } from 'react-redux'
-import { addTodo } from '../../store/todo/actionCreators'
+import { connect } from 'react-redux'
+import * as actionCreators from '../../store/todo/actionCreators'
 
 const emptyTodoItem: ITodoItem = {
   name: '',
@@ -20,8 +20,6 @@ function TodoActionPanel(props: any) {
   const [todoItem, setTodoItem] = useState<ITodoItem>(emptyTodoItem)
   const [addModal, setAddModal] = useState(false)
 
-  const dispatch = useDispatch()
-
   const editMode = false
 
   const openAddModal = () => setAddModal(true)
@@ -29,8 +27,7 @@ function TodoActionPanel(props: any) {
   const closeAddModal = () => setAddModal(false)
 
   const addNewTodoItem = () => {
-    // dispatch(addMoney(type))
-    dispatch(addTodo(todoItem))
+    props.addTodo(todoItem)
   }
 
   const changeTodoItem = (value: ITodoItem) => {
@@ -75,4 +72,4 @@ function TodoActionPanel(props: any) {
   )
 }
 
-export default TodoActionPanel
+export default connect(null, actionCreators)(TodoActionPanel)

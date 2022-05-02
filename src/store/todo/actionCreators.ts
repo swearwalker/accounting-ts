@@ -1,9 +1,9 @@
 import { ITodoItem, TodoAction } from '../../types/todo'
 import { ActionTypes } from './actionTypes'
 
-export function editTodo(payload: ITodoItem) {
+export function setTodo(payload: ITodoItem) {
   const action: TodoAction = {
-    type: ActionTypes.EDIT_TODO,
+    type: ActionTypes.SET_TODO,
     payload,
   }
 
@@ -13,6 +13,15 @@ export function editTodo(payload: ITodoItem) {
 export function addTodo(payload: ITodoItem) {
   const action: TodoAction = {
     type: ActionTypes.ADD_TODO,
+    payload,
+  }
+
+  return action
+}
+
+export function editTodo(payload: ITodoItem) {
+  const action: TodoAction = {
+    type: ActionTypes.EDIT_TODO,
     payload,
   }
 

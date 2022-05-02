@@ -1,19 +1,14 @@
 import { useState } from 'react'
-// import { useSelector } from 'react-redux'
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import MoneyModal from './modals/MoneyModal'
 import CategoryModal from './modals/CategoryModal'
 import OperationModal from './modals/OperationModal'
 import { Dialog } from 'primereact/dialog'
 import { Button } from 'primereact/button'
-import { SplitButton } from 'primereact/splitbutton'
-
 import { IMoney, ICategory, IOperation } from '../types'
-import { useDispatch } from 'react-redux'
-import { addMoney } from '../store/money/actionCreators'
-// import { MoneyState } from '../types/money'
-// import { IStore } from '../types/store'
-import { Link } from 'react-router-dom'
+import * as actionCreators from '../store/todo/actionCreators'
 
 const emptyType: IMoney = {
   name: '',
@@ -42,28 +37,6 @@ function Header(props: any) {
   const [category, setCategory] = useState<ICategory>(emptyCategory)
   const [operation, setOperation] = useState<IOperation>(emptyOperation)
 
-  const dispatch = useDispatch()
-
-  // const money: MoneyState = useSelector((state: IStore) => state.money)
-
-  const actions = [
-    {
-      label: 'Тип',
-      icon: 'pi pi-здгі',
-      command: () => setTypeModal(true),
-    },
-    {
-      label: 'Категорія',
-      icon: 'pi pi-здгі',
-      command: () => setCategoryModal(true),
-    },
-    {
-      label: 'Операція',
-      icon: 'pi pi-здгі',
-      command: () => setOperationModal(true),
-    },
-  ]
-
   const changeType = (value: IMoney) => {
     setType(value)
   }
@@ -90,17 +63,15 @@ function Header(props: any) {
   }
 
   const addNewMoney = () => {
-    dispatch(addMoney(type))
+    props.addMoney(type)
     closeModals()
   }
 
   const addNewCategory = () => {
-    // dispatch(createCategory(category))
     closeModals()
   }
 
   const addNewOperation = () => {
-    // dispatch(createOperation(operation))
     closeModals()
   }
 
@@ -130,7 +101,6 @@ function Header(props: any) {
             <Link className="nav__link mr-8" to="/">Головна</Link>
             <Link className="nav__link" to="/todo">Todo</Link>
         </nav>
-        <SplitButton label="Оберіть дію" icon="pi pi-plus" className='p-button-sm' model={actions} />
       </div>
       <Dialog
         header="Додати тип"
@@ -169,4 +139,4 @@ function Header(props: any) {
   )
 }
 
-export default Header
+export default connect(null, actionCreators)(Header)

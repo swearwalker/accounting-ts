@@ -1,7 +1,6 @@
 import { ActionTypes } from './actionTypes'
 import { TodoState, TodoAction, ITodoItem } from '../../types/todo'
 import { getGeneratedIntUniqueId } from '../../helpers/common'
-import { getDataByName } from '../../helpers/localStorage'
 
 const initState: TodoState = {
   list: [],
@@ -12,11 +11,19 @@ let updatedList: ITodoItem[] | [] = []
 
 export const todoReducer = (state = initState, action: TodoAction) => {
   switch (action.type) {
+    case ActionTypes.SET_TODO:
+      return {
+        ...state,
+        list: action.payload,
+      }
     case ActionTypes.ADD_TODO:
       const newItem: ITodoItem = {
         ...action.payload,
         id: getGeneratedIntUniqueId(),
       }
+      const list = JSON.parse(localStorage.getItem('todo') || '[]')
+
+      localStorage.setItem('todo', JSON.stringify([...list, newItem]))
 
       return {
         ...state,
